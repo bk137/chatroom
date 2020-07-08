@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="https://yuan-1252477692.cos.ap-guangzhou.myqcloud.com/blog/src/chatroom/avatar/default1.jpg" type="image/x-icon" />
+    <title>聊天室</title>
+    <link rel="Bookmark" href="https://yuan-1252477692.cos.ap-guangzhou.myqcloud.com/blog/src/chatroom/avatar/default1.jpg" />
+    <link rel="shortcut icon" href="https://yuan-1252477692.cos.ap-guangzhou.myqcloud.com/blog/src/chatroom/avatar/default1.jpg" type="image/x-icon" />
+    <link rel="icon" href="https://yuan-1252477692.cos.ap-guangzhou.myqcloud.com/blog/src/chatroom/avatar/default1.jpg" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="keywords" content="javaWebsocket+原生js打造,里面的人很有趣，快来玩吧。零三的笔记聊天室">
+    <meta name="description" content="javaWebsocket+原生js打造,里面的人很有趣，快来玩吧。零三的笔记聊天室">
+    <link rel="stylesheet" href="https://yuan-1252477692.cos.ap-guangzhou.myqcloud.com/blog/src/chatroom/font/iconfont.css">
+    <link rel="stylesheet" href="/css/chatRoom.css">
+</head>
+<body>
+<div class="web03">
+    <!--注册-->
+    <div class="login-view register-box">
+        <h3>注册用户</h3>
+        <div class="form-item">
+            <div>用户名</div>
+            <div><input type="text" placeholder="输入你的聊天昵称" id="nickname" style="width: 160px"></div>
+        </div>
+    
+        <div class="form-item">
+            <div>性别</div>
+            <div>
+                <label >
+                    男
+                    <input type="radio" hidden name="sex" value="1" checked="checked" class="sex-radio">
+                    <span class="circle"></span>
+                </label>
+                <label >
+                    女
+                    <input type="radio" hidden name="sex" value="0" class="sex-radio">
+                    <span class="circle"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-item">
+            <div>头像</div>
+            <div id="avatarList">
+            </div>
+        </div>
+        <div class="login-btn-view">
+            <button class="login-btn" onclick="registerFn()">注册</button>
+        </div>
+    </div>
+
+    <!--登陆-->
+    <!-- <div class="login-view login-box">
+        <h3>登陆聊天室</h3>
+        <div class="form-item">
+            <div>账号</div>
+            <div><input type="text" placeholder="登陆账号" id="loginUsername" value="111111"></div>
+        </div>
+        <div class="form-item">
+            <div>密码</div>
+            <div><input type="password" placeholder="登陆密码" id="loginPassword" value="111111"></div>
+        </div>
+        <div class="login-btn-view">
+
+            <button class="login-btn" onclick="loginIn()">登入</button>
+            <button class="login-btn login-btn-c" onclick="switchLoginView(1)">注册</button>
+        </div>
+    </div> -->
+
+    <!--聊天窗口-->
+    <div id="windowBox">
+        <!--左边列表-->
+        <div class="user-list">
+            <!--个人信息-->
+            <div class="user-list-header">
+                <div class="user-list-header-avatar">
+                    <img id="avatar_url" src="https://yuan-1252477692.cos.ap-guangzhou.myqcloud.com/blog/src/chatroom/avatar/default1.jpg"
+                         alt="" class="user-list-header-avatar-img">
+                </div>
+                <div class="user-list-header-txt">
+                    <p>
+                        <span class="user-list-header-nickname">---</span>
+                        <img src="http://localhost:3000/image/sex0.png" alt="" class="user-list-header-avatar-sex">
+                    </p>
+                    <p class="user-list-header-username">------</p>
+                </div>
+            </div>
+            <!--群聊-->
+            <div class="user-list-title">
+                <img src="https://yuan-1252477692.cos.ap-guangzhou.myqcloud.com/blog/src/chatroom/group.png" alt="">
+                群聊
+            </div>
+<!--           
+            <div class="user-list-tab">
+                <div onclick="switchUserListTab(1)">全部用户</div>
+            </div> -->
+            <!--全部用户列表-->
+            <div class="user-list-items-all">
+                
+            </div>
+            <!-- <div class="user-list-header user-list-item">
+                <div class="user-list-header-avatar user-list-item-header-avatar">
+                    <img src="http://localhost:3000/image/avatar1.jpg" alt="">
+                </div>
+                <div class="user-list-header-txt">
+                    <p class="user-list-header-nickname user-list-item-header-nickname">你好</p>
+                </div>
+            </div> -->
+
+        </div>
+        <!--弹出层-->
+        <div class="user-list-popup" onclick="hiddenUserListPopup()">
+            <!--<span class="user-list-popup-menu iconfont icon-menu-off"></span>-->
+        </div>
+        <!--按钮-->
+        <span class="show-user-list-popup-menu iconfont icon-menu-off" onclick="showUserListPopup()"></span>
+        <!--消息-->
+        <div class="message-box">
+            <div class="message-box-title" id="message-box-title-inline">聊天室(0)</div>
+            <!--消息列表-->
+            <div class="message-box-content">
+                <!-- <div class="load-message" onclick="loadMessage(this)"><span class="iconfont icon-time"></span>加载更多</div> -->
+                <!--时间-->
+                <!-- <p class="message-time">今天17:31</p> -->
+                <!--系统消息-->
+                <!-- <div class="message-system">零三进入聊天室</div> -->
+                <!--消息-->
+                <!-- <div class="message-item left">
+                    <div class="message-item-u">
+                        <img src="http://localhost:3000/image/avatar1.jpg" alt="" class="message-item-avatar">
+                        <div class="message-item-content">
+                            <p class="message-item-content-nickname">零三</p>
+                            <div class="message-item-content-bubble">呵呵呵呵呵呵呵</div>
+                        </div>
+                    </div>
+                    <div class="message-item-c"></div>
+                </div> -->
+                <!-- <div t="1594023891000" class="message-item right">
+                    <div class="message-item-u">
+                        <div class="message-item-content">
+                            <div class="message-item-content-bubble">
+                                kkk
+                            </div>
+                        </div>
+                        <img class="message-item-avatar" src="http://localhost:3000/image/avatar1.jpg">
+                    </div>
+                </div> -->
+            </div>
+            <!--发送面板-->
+            <div class="message-box-system">
+                <div class="message-box-system-menu">
+                    <div class="message-box-system-menu-enjoy" onMouseOver="showEnjoy(1)" onMouseOut="showEnjoy(0)">
+                        <img src="http://localhost:3000/image/menu-enjoy.png"
+                             alt="发送表情" class="message-box-system-menu-icon">
+                        <!--表情选择-->
+                        <div class="enjoy-view-position">
+                            <div class="enjoy-view">
+                                <table width="100%" height="100%" id="enjoyViewTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-box-system-menu-img">
+                        <img src="http://localhost:3000/image/menu-img.png"
+                             alt="发送图片" class="message-box-system-menu-icon">
+                        <input type="file" onchange="choiceImg(this)" accept="image/*" title="选择发送图片"/>
+                    </div>
+
+                </div>
+                <div class="message-box-system-message">
+                    <textarea type="text" class="message-box-system-message-c" value=""></textarea>
+                </div>
+                <div class="message-box-system-message-send">
+                    <span>按下Enter换行、Ctrl+Enter发送</span>
+                    <button class="btn-send" onclick="sendMessage()">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/chatRoom.js"></script>
+<script src="js/index.js"></script>
+</html>
